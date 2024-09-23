@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Porter’s Five Forces Chatbot</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h2 {
+            color: #333;
+        }
+        input, button {
+            padding: 10px;
+            margin: 10px 0;
+        }
+        #response {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <h2>Ask the Porter’s Five Forces Chatbot</h2>
+    <input type="text" id="question" placeholder="Type your question here" size="50">
+    <button onclick="askGPT()">Ask</button>
+
+    <div id="response"></div>
+
+    <script>
+        async function askGPT() {
+            const question = document.getElementById("question").value;
+            const responseDiv = document.getElementById("response");
+
+            // Replace with your OpenAI API key
+            const apiKey = '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';
+            const url = 'https://api.openai.com/v1/completions';
+            
+            const headers = {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${apiKey}`
+            };
+
+            const body = JSON.stringify({
+                model: "gpt-4o",
+                prompt: `You are a strategic management expert specializing in Porter’s Five Forces. Please answer the following question and help the user complete their template: ${question}`,
+                max_tokens: 250,
+                temperature: 0.5
+            });
+
+            // Send request to OpenAI API
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: headers,
+                body: body
+            });
+
+            const data = await response.json();
+            responseDiv.innerHTML = `<strong>Response:</strong> ${data.choices[0].text}`;
+        }
+    </script>
+</body>
+</html>
